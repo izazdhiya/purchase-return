@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BarangRequest;
 use App\Models\Barang;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -90,7 +89,7 @@ class BarangController extends Controller
         } catch (\Throwable $th) {
             DB::rollBack();
             Log::error('Error in Barang destroy method: ' . $th->getMessage());
-            return redirect()->route('barang.index')->with('error', 'barang gagal dihapus');
+            return redirect()->route('barang.index')->with('error', 'Barang gagal dihapus');
         }
     }
 }

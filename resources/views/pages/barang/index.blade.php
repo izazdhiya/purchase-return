@@ -10,7 +10,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>{{ __('Barang') }}</span>
                     <a class="btn btn-primary" href="{{ route('barang.create') }}">
-                        Tambah
+                        Tambah Barang
                     </a>
                     
                 </div>                
