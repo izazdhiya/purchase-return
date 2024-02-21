@@ -2,17 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BarangRequest;
 use App\Models\Barang;
 use Illuminate\Http\Request;
 
 class BarangController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return view('pages.barang.index');
     }
 
     /**
@@ -20,13 +25,13 @@ class BarangController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.barang.form');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BarangRequest $request)
     {
         //
     }
