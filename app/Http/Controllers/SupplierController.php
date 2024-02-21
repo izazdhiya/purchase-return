@@ -7,12 +7,21 @@ use Illuminate\Http\Request;
 
 class SupplierController extends Controller
 {
+    protected $supplierModel;
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->supplierModel = new Supplier();
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $allSupplier = $this->supplierModel->paginate(10);
+        return view('pages.supplier.index', compact('allSupplier'));
     }
 
     /**
@@ -20,7 +29,7 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.supplier.form');
     }
 
     /**
