@@ -5,19 +5,25 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BarangRequest;
 use App\Models\Barang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class BarangController extends Controller
 {
+    protected $barangModel;
+
     public function __construct()
     {
         $this->middleware('auth');
+        $this->barangModel = new Barang();
     }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('pages.barang.index');
+        $allBarang = $this->barangModel->paginate(10);
+        return view('pages.barang.index', compact('allBarang'));
     }
 
     /**
@@ -33,38 +39,58 @@ class BarangController extends Controller
      */
     public function store(BarangRequest $request)
     {
-        //
-    }
+        try {
+            DB::beginTransaction();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Barang $barang)
-    {
-        //
+            $barangId = $request->barangId;
+            $data = [
+                'kode'          => $request->kode,
+                'nama_barang'   => $request->nama_barang,
+            ];
+
+            if ($barangId) {
+                $this->barangModel->updateData($barangId, $data);
+            } else {
+                $data['stok'] = 0;
+                $this->barangModel->create($data);
+            }
+
+            DB::commit();
+
+            return redirect()->route('barang.index')->with('success', 'Barang berhasil disimpan');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Log::error('Error in Barang store method: ' . $th->getMessage());
+            return redirect()->route('barang.index')->with('error', 'Barang gagal disimpan');
+        }
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Barang $barang)
+    public function edit($id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Barang $barang)
-    {
-        //
+        $barang = $this->barangModel->find($id);
+        return view('pages.barang.form', compact('barang'));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Barang $barang)
+    public function destroy($id)
     {
-        //
+        try {
+            DB::beginTransaction();
+
+            $this->barangModel->deleteBarangById($id);
+
+            DB::commit();
+
+            return redirect()->route('barang.index')->with('success', 'Barang berhasil dihapus');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Log::error('Error in Barang destroy method: ' . $th->getMessage());
+            return redirect()->route('barang.index')->with('error', 'barang gagal dihapus');
+        }
     }
 }

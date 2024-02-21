@@ -30,8 +30,49 @@
                                     <th style="width: 15%"></th>
                                 </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+                                @foreach ($allBarang as $index => $barang)
+
+                                @php
+                                    $number = ($allBarang->currentPage() - 1) * $allBarang->perPage() + $index + 1;
+                                @endphp
+
+                                <tr style="vertical-align: middle;">
+                                    <td>{{ $number }}</td>
+                                    <td>{{ $barang->kode }}</td>
+                                    <td>{{ $barang->nama_barang }}</td>
+                                    <td>{{ $barang->stok }}</td>
+                                    <td>
+                                        <div class="d-flex flex-row-reverse">
+                                            <a class="btn btn-warning btn-sm mx-1" title="Edit" href='{{ route('barang.edit', $barang->id) }}'><i class="fas fa-pen"></i></a>
+                                            <form action="{{ route('barang.destroy', $barang->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-outline-danger btn-sm mx-1" title="Delete"><i class="fas fa-trash"></i></button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
                         </table>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        @if ($allBarang->lastPage() > 1)
+                            <ul class="pagination">
+                                <li class="page-item {{ ($allBarang->currentPage() == 1) ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $allBarang->url(1) }}">Previous</a>
+                                </li>
+                                @for ($i = 1; $i <= $allBarang->lastPage(); $i++)
+                                    <li class="page-item {{ ($allBarang->currentPage() == $i) ? 'active' : '' }}">
+                                        <a href="{{ $allBarang->url($i) }}" class="page-link">{{ $i }}</a>
+                                    </li>
+                                @endfor
+                                <li class="page-item {{ ($allBarang->currentPage() == $allBarang->lastPage()) ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $allBarang->url($allBarang->currentPage() + 1) }}">Next</a>
+                                </li>
+                            </ul>
+                        @endif
                     </div>
                 </div>
             </div>
