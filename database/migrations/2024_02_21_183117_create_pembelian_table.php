@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('pembelian', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->datetime('tanggal_transaksi');
+            $table->date('tanggal_transaksi');
             $table->string('no_faktur')->unique();
             $table->foreignId('supplier_id')->constrained('supplier');
             $table->decimal('total', 19, 2);
