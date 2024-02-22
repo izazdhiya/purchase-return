@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SupplierRequest;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class SupplierController extends Controller
 {
@@ -35,40 +38,60 @@ class SupplierController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SupplierRequest $request)
     {
-        //
-    }
+        try {
+            DB::beginTransaction();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Supplier $supplier)
-    {
-        //
+            $supplierId = $request->supplierId;
+            $data = [
+                'nama_supplier' => $request->nama_supplier,
+                'alamat'        => $request->alamat,
+                'email'         => $request->email
+            ];
+
+            if ($supplierId) {
+                $this->supplierModel->updateData($supplierId, $data);
+            } else {
+                $this->supplierModel->create($data);
+            }
+
+            DB::commit();
+
+            return redirect()->route('supplier.index')->with('success', 'Supplier berhasil disimpan');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Log::error('Error in Supplier store method: ' . $th->getMessage());
+            return redirect()->route('supplier.index')->with('error', 'Supplier gagal disimpan');
+        }
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Supplier $supplier)
+    public function edit($id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Supplier $supplier)
-    {
-        //
+        $supplier = $this->supplierModel->find($id);
+        return view('pages.supplier.form', compact('supplier'));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Supplier $supplier)
+    public function destroy($id)
     {
-        //
+        try {
+            DB::beginTransaction();
+
+            $this->supplierModel->deleteSupplierById($id);
+
+            DB::commit();
+
+            return redirect()->route('supplier.index')->with('success', 'Supplier berhasil dihapus');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Log::error('Error in supplier destroy method: ' . $th->getMessage());
+            return redirect()->route('supplier.index')->with('error', 'Supplier gagal dihapus');
+        }
     }
 }

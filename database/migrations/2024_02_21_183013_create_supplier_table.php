@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nama_supplier');
             $table->string('alamat');
             $table->string('email');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

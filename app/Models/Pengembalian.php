@@ -9,6 +9,7 @@ class Pengembalian extends Model
 {
     use HasFactory;
 
+    protected $table = 'pengembalian';
     protected $guarded = ['id'];
 
     protected $fillable = [
