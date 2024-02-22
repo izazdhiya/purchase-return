@@ -15,9 +15,9 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->foreignId('pembelian_id')->constrained('pembelian');
             $table->foreignId('barang_id')->constrained('barang');
-            $table->integer('jumlah');
+            $table->integer('quantity');
             $table->decimal('harga_satuan', 19, 2);
-            $table->decimal('total', 19, 2);
+            $table->decimal('sub_total', 19, 2);
             $table->timestamps();
         });
     }
