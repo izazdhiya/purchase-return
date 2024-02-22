@@ -39,7 +39,7 @@
                                 <a class="nav-link" href="{{ route('supplier.index') }}">{{ __('Supplier') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="">{{ __('Pembelian') }}</a>
+                                <a class="nav-link" href="{{ route('pembelian.index') }}">{{ __('Pembelian') }}</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="">{{ __('Pengembalian') }}</a>

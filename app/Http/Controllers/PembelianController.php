@@ -3,16 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pembelian;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 
 class PembelianController extends Controller
 {
+    protected $pembelianModel;
+    protected $supplierModel;
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->pembelianModel = new Pembelian();
+        $this->supplierModel = new Supplier();
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $allPembelian = $this->pembelianModel->paginate(10);
+        return view('pages.pembelian.index', compact('allPembelian')); 
     }
 
     /**
@@ -20,7 +32,8 @@ class PembelianController extends Controller
      */
     public function create()
     {
-        //
+        $allSupplier = $this->supplierModel->all();
+        return view('pages.pembelian.form', compact('allSupplier')); 
     }
 
     /**

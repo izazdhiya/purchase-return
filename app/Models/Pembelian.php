@@ -14,7 +14,6 @@ class Pembelian extends Model
 
     protected $fillable = [
         'tanggal_transaksi',
-        'no_faktur',
         'supplier_id',
         'total',
     ];
