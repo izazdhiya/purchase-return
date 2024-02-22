@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
         ]);
 
         $user->create([
-            'name' => 'admin',
+            'name' => 'kurir',
             'role' => 'pengiriman',
             'email' => 'kurir@example.com',
             'password' => bcrypt('admin'),
