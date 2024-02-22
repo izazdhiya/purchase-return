@@ -34,6 +34,18 @@ Follow these steps to set up and run the project locally:
    ```bash
    php artisan serve
 
+##
+**Admin**
+email: admin@example.com
+pass: admin
+
+**Gudang**
+email: gudang@example.com
+pass: admin
+
+**Kurir**
+email: kurir@example.com
+pass: admin
 
 
 
