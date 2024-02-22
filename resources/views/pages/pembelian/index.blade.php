@@ -24,11 +24,11 @@
                             <thead>
                                 <tr>
                                     <th style="width: 5%">#</th>
-                                    <th style="width: 20%; white-space: nowrap;">Tanggal Transaksi</th>
+                                    <th style="width: 25%; white-space: nowrap;">Tanggal Transaksi</th>
                                     <th style="width: 20%; white-space: nowrap;">No Faktur</th>
-                                    <th style="width: 20%">Supplier</th>
-                                    <th style="width: 20%">Total</th>
-                                    <th style="width: 15%"></th>
+                                    <th style="width: 25%">Supplier</th>
+                                    <th style="width: 15%">Total</th>
+                                    <th style="width: 10%"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -46,12 +46,7 @@
                                     <td>Rp {{ number_format($pembelian->total) }}</td>
                                     <td>
                                         <div class="d-flex flex-row-reverse">
-                                            <a class="btn btn-warning btn-sm mx-1" title="Edit" href='{{ route('barang.edit', $pembelian->id) }}'><i class="fas fa-pen"></i></a>
-                                            <form action="{{ route('barang.destroy', $pembelian->id) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-outline-danger btn-sm mx-1" title="Delete"><i class="fas fa-trash"></i></button>
-                                            </form>
+                                            <a class="btn btn-dark btn-sm mx-1" title="Detail" href='{{ route('pembelian.show', $pembelian->id) }}'><i class="fas fa-box"></i></a>
                                         </div>
                                     </td>
                                 </tr>

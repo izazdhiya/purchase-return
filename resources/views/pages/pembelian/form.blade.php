@@ -52,7 +52,6 @@
                                         <table class="table table-hover">
                                             <thead>
                                                 <tr>
-                                                    {{-- <th style="width: 5%">#</th> --}}
                                                     <th style="width: 30%; white-space: nowrap;">Nama Barang</th>
                                                     <th style="width: 10%;">Qty</th>
                                                     <th style="width: 20%">Harga</th>
@@ -62,7 +61,6 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    {{-- <th style="vertical-align: middle;">1</th> --}}
                                                     <td>
                                                         <input class="form-control @error('nama_barang') is-invalid @enderror" id="nama_barang" name="nama_barang" type="text" placeholder="Nama Barang" value="">
                                                     </td>
@@ -70,7 +68,7 @@
                                                         <input class="form-control @error('quantity') is-invalid @enderror" id="quantity" name="quantity" type="number" placeholder="0" value="">
                                                     </td>
                                                     <td>
-                                                        <input class="form-control @error('harga_satuan') is-invalid @enderror" id="harga_satuan" name="harga_satuan" placeholder="Rp" type="text" value="">
+                                                        <input class="form-control @error('harga_satuan') is-invalid @enderror" id="harga_satuan" name="harga_satuan" placeholder="Rp" type="text" value="" oninput="formatCurrency(this)">
                                                     </td>
                                                     <td>
                                                         <input class="form-control @error('sub_total') is-invalid @enderror" id="sub_total" name="sub_total" type="text" placeholder="Rp" value="" disabled>
@@ -116,6 +114,18 @@
         $('#tanggal_transaksi').datepicker({
             dateFormat: 'dd-mm-yy'
         });
+
+        var tanggalInput = document.getElementById('tanggal_transaksi');
+
+        if (tanggalInput.value === '') {
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0');
+            var yyyy = today.getFullYear();
+            today = dd + '-' + mm + '-' + yyyy;
+
+            tanggalInput.value = today;
+        }
     });
 </script>
 
@@ -127,16 +137,16 @@
             const newRow = `
                 <tr>
                     <td>
-                        <input class="form-control @error('nama_barang') is-invalid @enderror" id="nama_barang_${counter}" name="nama_barang[]" type="text" placeholder="Nama Barang" value="">
+                        <input class="form-control @error('nama_barang') is-invalid @enderror" id="nama_barang_${counter}" name="nama_barang[]" type="text" placeholder="Nama Barang">
                     </td>
                     <td>
-                        <input class="form-control @error('quantity') is-invalid @enderror" id="quantity_${counter}" name="quantity[]" type="number" placeholder="0" value="">
+                        <input class="form-control @error('quantity') is-invalid @enderror" id="quantity_${counter}" name="quantity[]" type="number" placeholder="0" oninput="updateSubTotal(${counter})">
                     </td>
                     <td>
-                        <input class="form-control @error('harga_satuan') is-invalid @enderror" id="harga_satuan_${counter}" name="harga_satuan[]" placeholder="Rp" type="text" value="">
+                        <input class="form-control @error('harga_satuan') is-invalid @enderror" id="harga_satuan_${counter}" name="harga_satuan[]" placeholder="Rp" type="text" oninput="formatAndCalculate(this, ${counter})">
                     </td>
                     <td>
-                        <input class="form-control @error('sub_total') is-invalid @enderror" id="sub_total_${counter}" name="sub_total[]" type="text" placeholder="Rp" value="" disabled>
+                        <input class="form-control @error('sub_total') is-invalid @enderror" id="sub_total_${counter}" name="sub_total[]" type="text" placeholder="Rp" disabled>
                     </td>
                     <td>
                         <button type="button" class="btn btn-outline-danger btn-sm" onclick="hapusBaris(this)">
@@ -154,5 +164,44 @@
         };
     });
 </script>
+
+<script>
+    function formatCurrency(input) {
+        var value = input.value.replace(/[^\d]/g, '');
+        var numberValue = parseInt(value);
+        if (!isNaN(numberValue)) {
+            input.value = 'Rp ' + numberValue.toLocaleString('id-ID');
+        } else {
+            input.value = '';
+        }
+    }
+</script>
+
+<script>
+    function formatAndCalculate(input, rowId) {
+        formatCurrency(input);
+        updateSubTotal(rowId);
+    }
+</script>
+
+<script>
+    function updateSubTotal(rowId) {
+        var quantity = document.getElementById('quantity_' + rowId).value;
+        var hargaSatuanInput = document.getElementById('harga_satuan_' + rowId);
+
+        var hargaSatuan = parseInt(hargaSatuanInput.value.replace(/[^\d.]/g, ''));
+        var subTotalInput = document.getElementById('sub_total_' + rowId);
+
+        var subTotal = parseInt(quantity) * hargaSatuan;
+
+        if (!isNaN(subTotal)) {
+            subTotalInput.value = 'Rp ' + subTotal.toLocaleString('id-ID');
+        } else {
+            subTotalInput.value = '';
+        }
+    }
+</script>
+
+
 
 @endsection

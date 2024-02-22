@@ -14,9 +14,9 @@ class PembelianItems extends Model
     protected $fillable = [
         'pembelian_id',
         'barang_id',
-        'jumlah',
+        'quantity',
         'harga_satuan',
-        'total',
+        'sub_total',
     ];
 
     public function pembelian()
@@ -27,5 +27,11 @@ class PembelianItems extends Model
     public function barang()
     {
         return $this->belongsTo(Barang::class);
+    }
+
+    public function getItemByPembelianId($pembelianId)
+    {
+        $itemPembelian = $this->where('pembelian_id', $pembelianId)->paginate(10);
+        return $itemPembelian;
     }
 }

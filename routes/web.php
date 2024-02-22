@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\PembelianController;
+use App\Http\Controllers\PembelianItemsController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -28,3 +29,4 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::resource('barang', BarangController::class);
 Route::resource('supplier', SupplierController::class);
 Route::resource('pembelian', PembelianController::class);
+Route::get('/pembelian/{pembelianId}', [PembelianItemsController::class, 'index'])->name('pembelian.detail');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pembelian;
+use App\Models\PembelianItems;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 
@@ -10,12 +11,14 @@ class PembelianController extends Controller
 {
     protected $pembelianModel;
     protected $supplierModel;
+    protected $pembelianItemModel;
 
     public function __construct()
     {
         $this->middleware('auth');
         $this->pembelianModel = new Pembelian();
         $this->supplierModel = new Supplier();
+        $this->pembelianItemModel = new PembelianItems();
     }
 
     /**
@@ -47,9 +50,11 @@ class PembelianController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Pembelian $pembelian)
+    public function show($id)
     {
-        //
+        $pembelian = $this->pembelianModel->find($id);
+        $allItemPembelian = $this->pembelianItemModel->getItemByPembelianId($id);
+        return view('pages.pembelian.detail', compact('allItemPembelian', 'pembelian'));
     }
 
     /**
