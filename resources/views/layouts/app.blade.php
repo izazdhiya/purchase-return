@@ -33,6 +33,12 @@
                     <ul class="navbar-nav me-auto">
                         @auth
                             <li class="nav-item">
+                                <a class="nav-link" href="{{ route('barang.index') }}">{{ __('Barang') }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('supplier.index') }}">{{ __('Supplier') }}</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="">{{ __('Pembelian') }}</a>
                             </li>
                             <li class="nav-item">
@@ -40,12 +46,6 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="">{{ __('Pengiriman') }}</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('supplier.index') }}">{{ __('Supplier') }}</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('barang.index') }}">{{ __('Barang') }}</a>
                             </li>
                         @endauth
                     </ul>

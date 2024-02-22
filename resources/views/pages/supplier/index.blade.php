@@ -24,8 +24,8 @@
                             <thead>
                                 <tr>
                                     <th style="width: 5%">#</th>
-                                    <th style="width: 20%">Nama Supplier</th>
-                                    <th style="width: 45%; white-space: nowrap;">Alamat</th>
+                                    <th style="width: 20%; white-space: nowrap;">Nama Supplier</th>
+                                    <th style="width: 45%">Alamat</th>
                                     <th style="width: 20%">Email</th>
                                     <th style="width: 10%"></th>
                                 </tr>
