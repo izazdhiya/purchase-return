@@ -19,14 +19,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect(route('barang.index'));
 });
 
-Auth::routes();
+Auth::routes(['register' => false]);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware('auth')->group(function () {
+    Route::resource('barang', BarangController::class)->except(['create','store', 'show', 'update'])->middleware('role:admin|pergudangan|pengiriman');
+    Route::get('barang/create', [BarangController::class, 'create'])->name('barang.create')->middleware('role:admin');
+    Route::post('barang/store', [BarangController::class, 'store'])->name('barang.store')->middleware('role:admin');
 
-Route::resource('barang', BarangController::class);
-Route::resource('supplier', SupplierController::class);
-Route::resource('pembelian', PembelianController::class);
-Route::get('/pembelian/{pembelianId}', [PembelianItemsController::class, 'index'])->name('pembelian.detail');
+    Route::resource('supplier', SupplierController::class)->middleware('role:admin');
+
+    Route::resource('pembelian', PembelianController::class)->except(['create','store'])->middleware('role:admin|pergudangan');
+    Route::get('pembelian/create', [PembelianController::class, 'create'])->name('pembelian.create')->middleware('role:admin');
+    Route::post('pembelian/store', [PembelianController::class, 'store'])->name('pembelian.store')->middleware('role:admin');
+});

@@ -9,9 +9,12 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>NO FAKTUR: {{ $pembelian->no_faktur }}</span>
-                    <a class="btn btn-primary" href="">
-                        Buat Laporan Kerusakan
-                    </a>
+
+                    @if (Auth::user()->role == "pergudangan")
+                        <a class="btn btn-primary" href="">
+                            Buat Laporan Kerusakan
+                        </a>
+                    @endif
                     
                 </div>                
 
@@ -26,8 +29,10 @@
                                     <th style="width: 5%">#</th>
                                     <th style="width: 20%; white-space: nowrap;">Nama Barang</th>
                                     <th style="width: 20%">Quantity</th>
-                                    <th style="width: 20%">Harga Satuan</th>
-                                    <th style="width: 20%">Sub Total</th>
+                                    @if (Auth::user()->role == "admin")
+                                        <th style="width: 20%">Harga Satuan</th>
+                                        <th style="width: 20%">Sub Total</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -41,8 +46,10 @@
                                     <td>{{ $number }}</td>
                                     <td>{{ $itemPembelian->barang->nama_barang }}</td>
                                     <td>{{ $itemPembelian->quantity }}</td>
-                                    <td>Rp {{ number_format($itemPembelian->harga_satuan) }}</td>
-                                    <td>Rp {{ number_format($itemPembelian->sub_total) }}</td>
+                                    @if (Auth::user()->role == "admin")
+                                        <td>Rp {{ number_format($itemPembelian->harga_satuan) }}</td>
+                                        <td>Rp {{ number_format($itemPembelian->sub_total) }}</td>
+                                    @endif
                                 </tr>
                                 @endforeach
                             </tbody>

@@ -35,18 +35,29 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('barang.index') }}">{{ __('Barang') }}</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('supplier.index') }}">{{ __('Supplier') }}</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('pembelian.index') }}">{{ __('Pembelian') }}</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="">{{ __('Pengembalian') }}</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="">{{ __('Pengiriman') }}</a>
-                            </li>
+                            @if (Auth::user()->role == "admin")
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('supplier.index') }}">{{ __('Supplier') }}</a>
+                                </li>
+                            @endif
+
+                            @if (Auth::user()->role == "admin" || Auth::user()->role == "pergudangan")
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('pembelian.index') }}">{{ __('Pembelian') }}</a>
+                                </li>
+                            @endif
+
+                            @if (Auth::user()->role == "admin")
+                                <li class="nav-item">
+                                    <a class="nav-link" href="">{{ __('Pengembalian') }}</a>
+                                </li>
+                            @endif
+
+                            @if (Auth::user()->role == "pengiriman")
+                                <li class="nav-item">
+                                    <a class="nav-link" href="">{{ __('Pengiriman') }}</a>
+                                </li>
+                            @endif
                         @endauth
                     </ul>
 

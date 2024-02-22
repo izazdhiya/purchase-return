@@ -9,9 +9,12 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>{{ __('Barang') }}</span>
-                    <a class="btn btn-primary" href="{{ route('barang.create') }}">
-                        Tambah Barang
-                    </a>
+
+                    @if (Auth::user()->role == "admin")
+                        <a class="btn btn-primary" href="{{ route('barang.create') }}">
+                            Tambah Barang
+                        </a>
+                    @endif
                     
                 </div>                
 
@@ -27,7 +30,9 @@
                                     <th style="width: 30%">Kode</th>
                                     <th style="width: 30%; white-space: nowrap;">Nama Barang</th>
                                     <th style="width: 20%">Stok</th>
-                                    <th style="width: 15%"></th>
+                                    @if (Auth::user()->role == "admin")
+                                        <th style="width: 15%"></th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -42,16 +47,19 @@
                                     <td>{{ $barang->kode }}</td>
                                     <td>{{ $barang->nama_barang }}</td>
                                     <td>{{ $barang->stok }}</td>
-                                    <td>
-                                        <div class="d-flex flex-row-reverse">
-                                            <a class="btn btn-warning btn-sm mx-1" title="Edit" href='{{ route('barang.edit', $barang->id) }}'><i class="fas fa-pen"></i></a>
-                                            <form action="{{ route('barang.destroy', $barang->id) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-outline-danger btn-sm mx-1" title="Delete"><i class="fas fa-trash"></i></button>
-                                            </form>
-                                        </div>
-                                    </td>
+
+                                    @if (Auth::user()->role == "admin")
+                                        <td>
+                                            <div class="d-flex flex-row-reverse">
+                                                <a class="btn btn-warning btn-sm mx-1" title="Edit" href='{{ route('barang.edit', $barang->id) }}'><i class="fas fa-pen"></i></a>
+                                                <form action="{{ route('barang.destroy', $barang->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-outline-danger btn-sm mx-1" title="Delete"><i class="fas fa-trash"></i></button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    @endif
                                 </tr>
                                 @endforeach
                             </tbody>
